@@ -1,0 +1,219 @@
+2020-07-09 13:33:22,737 INFO org.springframework.boot.StartupInfoLogger [main] Starting BinancebotApplication on MacBook-Pro-van-Sergio.local with PID 1664 (/Users/sergiohellings/code/src/binancebot/target/classes started by sergiohellings in /Users/sergiohellings/code/src/binancebot)
+2020-07-09 13:33:22,741 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.3.1.RELEASE, Spring v5.2.7.RELEASE
+2020-07-09 13:33:22,742 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-09 13:33:26,024 INFO org.springframework.boot.StartupInfoLogger [main] Started BinancebotApplication in 3.962 seconds (JVM running for 4.539)
+2020-07-09 13:33:26,679 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Initial bar count: 0
+2020-07-09 13:33:27,181 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:33:27,184 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:33:27,184 DEBUG com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC First time Strategy has been called - creating new empty Order object.
+2020-07-09 13:33:27,185 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:33:27,186 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018186
+2020-07-09 13:33:27,187 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018187
+2020-07-09 13:33:27,196 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:33:47,202 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:33:47,203 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:33:47,204 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:33:47,205 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018187
+2020-07-09 13:33:47,206 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018189
+2020-07-09 13:33:47,206 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:34:07,210 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:34:07,211 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:34:07,212 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:34:07,214 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018187
+2020-07-09 13:34:07,215 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.001819
+2020-07-09 13:34:07,216 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:34:27,221 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:34:27,222 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:34:27,222 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:34:27,222 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018191
+2020-07-09 13:34:27,223 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018192
+2020-07-09 13:34:27,223 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:34:47,228 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:34:47,229 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:34:47,229 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:34:47,230 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018193
+2020-07-09 13:34:47,230 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018194
+2020-07-09 13:34:47,230 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:35:07,236 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:35:07,237 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:35:07,237 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:35:07,238 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018189
+2020-07-09 13:35:07,238 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018192
+2020-07-09 13:35:07,238 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:35:27,243 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:35:27,243 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:35:27,244 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:35:27,244 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018189
+2020-07-09 13:35:27,244 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018198
+2020-07-09 13:35:27,244 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:35:47,248 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:35:47,249 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:35:47,249 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:35:47,250 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018187
+2020-07-09 13:35:47,250 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018193
+2020-07-09 13:35:47,250 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:36:07,252 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:36:07,256 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:36:07,256 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:36:07,257 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018174
+2020-07-09 13:36:07,259 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018179
+2020-07-09 13:36:07,260 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:36:27,264 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:36:27,264 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:36:27,264 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:36:27,265 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018183
+2020-07-09 13:36:27,265 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018184
+2020-07-09 13:36:27,266 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:36:47,269 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:36:47,272 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:36:47,272 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:36:47,273 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.001819
+2020-07-09 13:36:47,274 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018193
+2020-07-09 13:36:47,275 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:37:07,287 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:37:07,288 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:37:07,288 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:37:07,289 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018194
+2020-07-09 13:37:07,290 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018196
+2020-07-09 13:37:07,291 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:37:27,299 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:37:27,300 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:37:27,301 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:37:27,302 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018199
+2020-07-09 13:37:27,302 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.00182
+2020-07-09 13:37:27,302 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:37:47,309 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:37:47,311 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:37:47,311 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:37:47,312 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018187
+2020-07-09 13:37:47,312 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018195
+2020-07-09 13:37:47,313 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:38:07,320 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:38:07,320 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:38:07,321 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:38:07,322 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018175
+2020-07-09 13:38:07,323 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018181
+2020-07-09 13:38:07,323 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:38:57,904 INFO org.springframework.boot.StartupInfoLogger [main] Starting BinancebotApplicationTests on MacBook-Pro-van-Sergio.local with PID 1753 (started by sergiohellings in /Users/sergiohellings/code/src/binancebot)
+2020-07-09 13:38:57,907 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.3.1.RELEASE, Spring v5.2.7.RELEASE
+2020-07-09 13:38:57,912 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-09 13:39:09,392 INFO org.springframework.boot.StartupInfoLogger [main] Started BinancebotApplicationTests in 14.309 seconds (JVM running for 18.773)
+2020-07-09 13:39:09,888 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Initial bar count: 0
+2020-07-09 13:39:10,549 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:39:10,554 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:39:10,555 DEBUG com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC First time Strategy has been called - creating new empty Order object.
+2020-07-09 13:39:10,555 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:39:10,556 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.0018178
+2020-07-09 13:39:10,558 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018188
+2020-07-09 13:39:10,572 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:40:45,940 INFO org.springframework.boot.StartupInfoLogger [main] Starting BinancebotApplicationTests on MacBook-Pro-van-Sergio.local with PID 1833 (started by sergiohellings in /Users/sergiohellings/code/src/binancebot)
+2020-07-09 13:40:45,942 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.3.1.RELEASE, Spring v5.2.7.RELEASE
+2020-07-09 13:40:45,944 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-09 13:40:50,822 INFO org.springframework.boot.StartupInfoLogger [main] Started BinancebotApplicationTests in 5.959 seconds (JVM running for 9.187)
+2020-07-09 13:40:51,176 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Initial bar count: 0
+2020-07-09 13:40:52,347 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:40:52,349 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:40:52,350 DEBUG com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC First time Strategy has been called - creating new empty Order object.
+2020-07-09 13:40:52,351 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: 
+<<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:40:52,354 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best BID price=0.001819
+2020-07-09 13:40:52,355 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main]  Best ASK price=0.0018197
+2020-07-09 13:40:52,371 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:47:17,058 INFO org.springframework.boot.StartupInfoLogger [main] Starting BinancebotApplicationTests on MacBook-Pro-van-Sergio.local with PID 1961 (started by sergiohellings in /Users/sergiohellings/code/src/binancebot)
+2020-07-09 13:47:17,070 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.3.1.RELEASE, Spring v5.2.7.RELEASE
+2020-07-09 13:47:17,074 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-09 13:47:22,729 INFO org.springframework.boot.StartupInfoLogger [main] Started BinancebotApplicationTests in 6.912 seconds (JVM running for 10.839)
+2020-07-09 13:47:23,668 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:47:23,672 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:47:23,673 DEBUG com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC First time Strategy has been called - creating new empty Order object.
+2020-07-09 13:47:23,674 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: <<< Free amount of BTC on account : 0.00280627 >>> 
+
+2020-07-09 13:47:23,676 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best BID price=0.0018202
+2020-07-09 13:47:23,677 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best ASK price=0.0018204
+2020-07-09 13:47:23,678 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: null
+2020-07-09 13:47:59,302 INFO org.springframework.boot.StartupInfoLogger [main] Starting BinancebotApplicationTests on MacBook-Pro-van-Sergio.local with PID 2001 (started by sergiohellings in /Users/sergiohellings/code/src/binancebot)
+2020-07-09 13:47:59,309 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.3.1.RELEASE, Spring v5.2.7.RELEASE
+2020-07-09 13:47:59,311 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-09 13:48:04,637 INFO org.springframework.boot.StartupInfoLogger [main] Started BinancebotApplicationTests in 7.069 seconds (JVM running for 10.897)
+2020-07-09 13:48:05,332 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:48:05,335 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:48:05,337 DEBUG com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC First time Strategy has been called - creating new empty Order object.
+2020-07-09 13:48:05,338 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: <<< Free amount of BTC on account to trade with: 0.00280627 >>> 
+
+2020-07-09 13:48:05,339 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best BID price=0.0018186
+2020-07-09 13:48:05,340 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best ASK price=0.0018195
+2020-07-09 13:48:05,351 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 13:48:25,358 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 13:48:25,360 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 13:48:25,360 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: <<< Free amount of BTC on account to trade with: 0.00280627 >>> 
+
+2020-07-09 13:48:25,361 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best BID price=0.0018194
+2020-07-09 13:48:25,362 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best ASK price=0.0018195
+2020-07-09 13:48:25,363 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 14:40:05,981 INFO org.springframework.boot.StartupInfoLogger [main] Starting BinancebotApplicationTests on MacBook-Pro-van-Sergio.local with PID 2638 (started by sergiohellings in /Users/sergiohellings/code/src/binancebot)
+2020-07-09 14:40:05,983 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.3.1.RELEASE, Spring v5.2.7.RELEASE
+2020-07-09 14:40:05,984 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-09 14:40:10,051 INFO org.springframework.boot.StartupInfoLogger [main] Started BinancebotApplicationTests in 4.947 seconds (JVM running for 6.919)
+2020-07-09 14:40:11,649 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 14:40:11,651 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 14:40:11,652 DEBUG com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC First time Strategy has been called - creating new empty Order object.
+2020-07-09 14:40:11,653 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: <<< Free amount of BTC on account to trade with: 0.00280627 >>> 
+
+2020-07-09 14:40:11,654 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best BID price=0.001821
+2020-07-09 14:40:11,655 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best ASK price=0.0018216
+2020-07-09 14:40:11,668 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 14:40:31,672 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 14:40:31,672 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: <<< Free amount of BTC on account to trade with: 0.00280627 >>> 
+
+2020-07-09 14:40:31,673 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best BID price=0.0018212
+2020-07-09 14:40:31,674 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best ASK price=0.0018215
+2020-07-09 14:40:31,675 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Last Order was: Order[symbol=<null>,orderId=<null>,clientOrderId=<null>,price=<null>,origQty=<null>,executedQty=<null>,status=<null>,timeInForce=<null>,type=<null>,side=<null>,stopPrice=<null>,icebergQty=<null>,time=0,cummulativeQuoteQty=<null>]
+2020-07-09 14:42:23,348 INFO org.springframework.boot.StartupInfoLogger [main] Starting BinancebotApplicationTests on MacBook-Pro-van-Sergio.local with PID 2720 (started by sergiohellings in /Users/sergiohellings/code/src/binancebot)
+2020-07-09 14:42:23,351 DEBUG org.springframework.boot.StartupInfoLogger [main] Running with Spring Boot v2.3.1.RELEASE, Spring v5.2.7.RELEASE
+2020-07-09 14:42:23,352 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-09 14:42:26,992 INFO org.springframework.boot.StartupInfoLogger [main] Started BinancebotApplicationTests in 4.386 seconds (JVM running for 6.311)
+2020-07-09 14:42:27,867 INFO com.sidrhelli.binancebot.engine.TradingEngine [main] Executing Trading Strategy ---> com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl
+2020-07-09 14:42:27,869 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 14:42:27,869 DEBUG com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC First time Strategy has been called - creating new empty Order object.
+2020-07-09 14:42:27,870 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: <<< Free amount of BTC on account to trade with: 0.00280627 >>> 
+
+2020-07-09 14:42:27,871 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best BID price=0.001821
+2020-07-09 14:42:27,873 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best ASK price=0.0018211
+2020-07-09 14:42:47,876 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] BNB/BTC Checking order status..
+2020-07-09 14:42:47,879 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] AccountDetails: <<< Free amount of BTC on account to trade with: 0.00280627 >>> 
+
+2020-07-09 14:42:47,880 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best BID price=0.0018211
+2020-07-09 14:42:47,881 INFO com.sidrhelli.binancebot.strategies.api.CryptoMomentumStrategyImpl [main] Best ASK price=0.0018218

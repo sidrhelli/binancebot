@@ -1,0 +1,5 @@
+# A friendly name for the Exchange. Value must be an alphanumeric string. Spaces are allowed.
+
+  name: Binance Exchange
+  key: 
+  secret: 
