@@ -165,9 +165,11 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
         .and(new CrossedDownIndicatorRule(cmo, PrecisionNum.valueOf(0)))
         .and(new OverIndicatorRule(shortEma, closePrice));
 
-    // Buy when the trend is up and shorts SMA crosses long SMA or when the price dropped with a
-    // certain percentage and MACD is going up. And stochasticOscillator crossed down the value of
-    // 20 and short EMA is already over long EMA
+    /*
+     * Buy when the trend is up and the shorts SMA crosses the long SMA or when the price dropped
+     * with 5 % and the MACD is going up.Then check if the stochasticOscillator crossed down the
+     * value of 20 and short the EMA is already over long the EMA.
+     */
     Rule buy =
         new CrossedUpIndicatorRule(shortSma, longSma).or(new CrossedDownIndicatorRule(closePrice,
             getClosePriceMinPercentage(closePrice, series, ZERO_DOT_ZERO_FIVE))
@@ -175,13 +177,15 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
                 .and(new CrossedDownIndicatorRule(stochasticOscillK, PrecisionNum.valueOf(20)))
                 .and(new OverIndicatorRule(shortEma, longEma)).and(momentumEntry));
 
-    // Check if trend is goin down
+    // Trend is down?
     Rule momentumExit = new UnderIndicatorRule(shortSma, longSma)
         .and(new CrossedUpIndicatorRule(cmo, PrecisionNum.valueOf(0)))
         .and(new UnderIndicatorRule(shortSma, closePrice));
 
-    // Sell if short EMA is going under long EMA, Signal 1. And check if MACD is going
-    // down or when the loss is 3% or when a profit of 2% is made.
+    /*
+     * Sell if short EMA is going under long EMA, Signal 1. And check if MACD is going down or when
+     * the loss is 3% or when a profit of 2% is made.
+     */
     Rule sell = new UnderIndicatorRule(shortEma, longEma)
         // Signal 1
         .and(new CrossedUpIndicatorRule(stochasticOscillK, PrecisionNum.valueOf(80)))
