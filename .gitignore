@@ -31,4 +31,8 @@ build/
 .vscode/
 
 ### logs ###
-/logs
+*.logs
+/bin/
+
+###
+exchange.yaml

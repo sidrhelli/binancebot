@@ -7,12 +7,16 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.ta4j.core.Bar;
 import org.ta4j.core.BarSeries;
+import org.ta4j.core.BaseBar;
 import org.ta4j.core.BaseBarSeriesBuilder;
 import org.ta4j.core.BaseStrategy;
 import org.ta4j.core.BaseTradingRecord;
@@ -85,6 +89,12 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
     final BigDecimal bestBidPrice = apiService.getBestBid().getKey();
     final BigDecimal bestAskPrice = apiService.getBestAsk().getKey();
 
+
+
+    Map<Long, Candlestick> candleSticks = apiService.getCandlesticksCache();
+    Long newestCandleStickKey = Collections.max(candleSticks.keySet());
+    Candlestick newestCandleStick = candleSticks.get(newestCandleStickKey);
+
     /*
      * Is this the first time the Strategy has been called? If yes, we initialise the OrderState so
      * we can keep track of orders during later trace cycles.
@@ -95,9 +105,18 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
       lastOrder = new Order();
     }
 
+    series.addBar(convertCandleStickToBaseBar(newestCandleStick));
+    endIndex = series.getEndIndex();
+
+    LOG.info("<<< Adding new bar" + newestCandleStick.getOpen() + " - "
+        + newestCandleStick.getHigh() + " - " + newestCandleStick.getLow() + " - "
+        + newestCandleStick.getClose() + " to series>>>");
+
     LOG.info("AccountDetails: <<< Free amount of BTC on account to trade with: "
-        + apiService.getAccountBalanceCache().get("BTC").getFree() + " >>> \n");
+        + apiService.getAccountBalanceCache().get("BTC").getFree() + " >>>");
+
     LOG.info("Best BID price=" + new DecimalFormat(DECIMAL_FORMAT).format(bestBidPrice));
+
     LOG.info("Best ASK price=" + new DecimalFormat(DECIMAL_FORMAT).format(bestAskPrice));
 
 
@@ -132,6 +151,16 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
   /*
    * Builds the buy and sell rules for this strategy
    * 
+   * 
+   * Buys when the trend is up and the shorts SMA crosses the long SMA or when the price dropped
+   * with 5 % and the MACD is going up.Then check if the stochasticOscillator crossed down the value
+   * of 20 and short the EMA is already over long the EMA.
+   * 
+   * 
+   * 
+   * Sells if short EMA is going under long EMA, Signal 1. And check if MACD is going down or when
+   * the loss is 3% or when a profit of 2% is made.
+   * 
    * @parameter Barseries series
    * 
    * @return Strategy
@@ -140,36 +169,22 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
 
     ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
     CMOIndicator cmo = new CMOIndicator(closePrice, 9);
-
-    // EMA
     EMAIndicator shortEma = new EMAIndicator(closePrice, 9);
     EMAIndicator longEma = new EMAIndicator(closePrice, 26);
-
-    // Stochastic
     StochasticOscillatorKIndicator stochasticOscillK =
         new StochasticOscillatorKIndicator(series, 14);
-
-    // MACD
     MACDIndicator macd = new MACDIndicator(closePrice);
     EMAIndicator emaMacd = new EMAIndicator(macd, 18);
-
-    // SMA
     SMAIndicator shortSma = new SMAIndicator(closePrice, 41);
     SMAIndicator longSma = new SMAIndicator(closePrice, 14);
-
-    // RSI
     RSIIndicator rsi = new RSIIndicator(closePrice, 2);
 
-    // Check if trend is going up
+    // Trend
     Rule momentumEntry = new OverIndicatorRule(shortSma, longSma)
         .and(new CrossedDownIndicatorRule(cmo, PrecisionNum.valueOf(0)))
         .and(new OverIndicatorRule(shortEma, closePrice));
 
-    /*
-     * Buy when the trend is up and the shorts SMA crosses the long SMA or when the price dropped
-     * with 5 % and the MACD is going up.Then check if the stochasticOscillator crossed down the
-     * value of 20 and short the EMA is already over long the EMA.
-     */
+
     Rule buy =
         new CrossedUpIndicatorRule(shortSma, longSma).or(new CrossedDownIndicatorRule(closePrice,
             getClosePriceMinPercentage(closePrice, series, ZERO_DOT_ZERO_FIVE))
@@ -177,23 +192,16 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
                 .and(new CrossedDownIndicatorRule(stochasticOscillK, PrecisionNum.valueOf(20)))
                 .and(new OverIndicatorRule(shortEma, longEma)).and(momentumEntry));
 
-    // Trend is down?
+
     Rule momentumExit = new UnderIndicatorRule(shortSma, longSma)
         .and(new CrossedUpIndicatorRule(cmo, PrecisionNum.valueOf(0)))
         .and(new UnderIndicatorRule(shortSma, closePrice));
 
-    /*
-     * Sell if short EMA is going under long EMA, Signal 1. And check if MACD is going down or when
-     * the loss is 3% or when a profit of 2% is made.
-     */
+
     Rule sell = new UnderIndicatorRule(shortEma, longEma)
-        // Signal 1
         .and(new CrossedUpIndicatorRule(stochasticOscillK, PrecisionNum.valueOf(80)))
-        // Signal 2
         .and(new UnderIndicatorRule(macd, emaMacd)).or(momentumExit)
-        // Protect against severe losses
         .or(new StopLossRule(closePrice, PrecisionNum.valueOf(3.0)))
-        // Take profits and run
         .or(new StopGainRule(closePrice, PrecisionNum.valueOf(2.0))
             .and(new UnderIndicatorRule(shortSma, closePrice))
             .or(new CrossedUpIndicatorRule(rsi, 95)));
@@ -212,31 +220,29 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
    */
   private void executeAlgoForWhenLastOrderWasNone(BigDecimal currentBidPrice)
       throws StrategyException {
-
+    LOG.info(marketName + " OrderType is NONE - looking for new BUY order at ["
+        + new DecimalFormat(DECIMAL_FORMAT).format(currentBidPrice) + "]");
     try {
 
+
       if (strategy.shouldEnter(endIndex)) {
-
         LOG.info(getStrategyName() + " Sending initial BUY order to exchange --->");
-
-        LOG.info(marketName + " OrderType is NONE - looking for new BUY order at ["
-            + new DecimalFormat(DECIMAL_FORMAT).format(currentBidPrice) + "]");
 
         amountOfBaseCurrencyToBuy = getAmountOfBaseCurrencyToBuyForGivenCounterCurrencyAmount(
             counterCurrencyBuyOrderAmount);
 
-        // Add entry to trading Record
         // TODO: persist
         boolean entered = tradingRecord.enter(endIndex, PrecisionNum.valueOf(currentBidPrice),
             PrecisionNum.valueOf(amountOfBaseCurrencyToBuy));
         if (entered) {
           LOG.info(getStrategyName() + " should ENTER on " + endIndex);
 
-          NewOrderResponse newOrder = apiService.createRealMarketBuyOrder(marketSymbol,
+          final NewOrderResponse newOrder = apiService.createRealMarketBuyOrder(marketSymbol,
               amountOfBaseCurrencyToBuy.toPlainString());
 
           // Update last order details
           lastOrder.setOrderId(newOrder.getOrderId());
+
           LOG.info(getStrategyName()
               + " <<<<< ***** Yes, we've made a trade! Lets wait and see.. ****** \n Initial BUY Order sent successfully. ID: "
               + lastOrder.getOrderId() + "********>>>>>");
@@ -277,8 +283,6 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
       throws StrategyException {
     try {
 
-      // Fetch our current open orders and see if the buy order is still outstanding/open on the
-      // exchange
       final List<com.binance.api.client.domain.account.Order> myOrders =
           apiService.getOpenOrders(marketSymbol);
       boolean lastOrderFound = false;
@@ -295,7 +299,8 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
         LOG.info(
 
             marketName + " ^^^ Yay!!! Last BUY Order Id [" + lastOrder.getOrderId()
-                + "] filled at [" + lastOrder.getPrice() + "]");
+                + "] filled at [" + lastOrder.getPrice() + "] " + "amount :[ "
+                + lastOrder.getOrigQty() + " ]");
 
         /*
          * The last buy order was filled, so lets see if we can send a new sell order.
@@ -316,7 +321,7 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
             LOG.info(marketName + " Sending new SELL order to exchange --->");
 
             // Sending the sell order to the exchange
-            NewOrderResponse newOrder =
+            final NewOrderResponse newOrder =
                 apiService.createRealMarketSellOrder(marketSymbol, lastOrder.getOrigQty());
 
             // Update last order details
@@ -368,8 +373,9 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
       }
 
       if (!lastOrderFound) {
-        LOG.info(marketName + " Yes!!! Last SELL Order Id [" + lastOrder.getOrderId()
-            + "] filled at [" + lastOrder.getPrice() + "]");
+        LOG.info(
+            marketName + " Yes!!! Last SELL Order Id [" + lastOrder.getOrderId() + "] filled at ["
+                + lastOrder.getPrice() + "]" + "amount :[ " + lastOrder.getOrigQty() + " ]");
 
         if (strategy.shouldEnter(endIndex)) {
 
@@ -387,7 +393,7 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
 
             LOG.info(marketName + " Sending new BUY order to exchange --->");
 
-            NewOrderResponse newOrder = apiService.createRealMarketBuyOrder(marketSymbol,
+            final NewOrderResponse newOrder = apiService.createRealMarketBuyOrder(marketSymbol,
                 amountOfBaseCurrencyToBuy.toPlainString());
 
             // Update last order details
@@ -488,6 +494,17 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
     return series;
   }
 
+  private Bar convertCandleStickToBaseBar(Candlestick candleStick) {
 
+    Num open = PrecisionNum.valueOf(candleStick.getOpen());
+    Num low = PrecisionNum.valueOf(candleStick.getLow());
+    Num high = PrecisionNum.valueOf(candleStick.getHigh());
+    Num close = PrecisionNum.valueOf(candleStick.getClose());
+    Num volume = PrecisionNum.valueOf(candleStick.getVolume());
+    Num amount = PrecisionNum.valueOf(candleStick.getNumberOfTrades());
+
+    return new BaseBar(Duration.ofMinutes(DURATION_OF_BAR), ZonedDateTime.now(ZoneId.of("UTC")),
+        open, high, low, close, volume, amount);
+  }
 
 }
