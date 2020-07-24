@@ -29,7 +29,6 @@ import com.binance.api.client.domain.market.OrderBookEntry;
 import com.binance.api.client.domain.market.TickerPrice;
 import com.sidrhelli.binancebot.apiservice.ApiService;
 import com.sidrhelli.binancebot.config.service.ConfigService;
-import com.sidrhelli.binancebot.exceptions.TradingApiException;
 
 
 @Component
@@ -47,41 +46,23 @@ public class ApiServiceImpl implements ApiService {
   private String apiKey;
   private String secret;
   private String symbol;
+  private Map<Long, Candlestick> candlesticksCache;
+  private Map<String, AssetBalance> accountBalanceCache;
+  private String listenKey;
   @SuppressWarnings("unused")
   private String latestPrice;
-  /**
-   * Key is the start/open time of the candle, and the value contains candlestick date.
-   */
-  private Map<Long, Candlestick> candlesticksCache;
-
-  /**
-   * Key is the symbol, and the value is the balance of that symbol on the account.
-   */
-  private Map<String, AssetBalance> accountBalanceCache;
-
-  /**
-   * Listen key used to interact with the user data streaming API.
-   */
-  private String listenKey;
 
 
   @Autowired
   public ApiServiceImpl(ConfigService configService) {
     this.configService = configService;
     this.depthCache = new HashMap<>();
-
     initApi();
   }
 
-
-  /**
-   * @return an account balance cache, containing the balance for every asset in this account.
-   */
   public Map<String, AssetBalance> getAccountBalanceCache() {
     return accountBalanceCache;
   }
-
-  // Market orderbook
 
   @Override
   public NavigableMap<BigDecimal, BigDecimal> getAsks() {
@@ -93,37 +74,22 @@ public class ApiServiceImpl implements ApiService {
     return depthCache.get(BIDS);
   }
 
-  /**
-   * @return the best ask in the order book
-   */
   @Override
   public Map.Entry<BigDecimal, BigDecimal> getBestAsk() {
     return getAsks().lastEntry();
   }
 
-  /**
-   * @return the best bid in the order book
-   */
   @Override
   public Map.Entry<BigDecimal, BigDecimal> getBestBid() {
     return getBids().firstEntry();
   }
 
-  /**
-   * @return a depth cache, containing two keys (ASKs and BIDs), and for each, an ordered list of
-   *         book entries.
-   */
   @Override
   public Map<String, NavigableMap<BigDecimal, BigDecimal>> getMarketOrderBook() {
     return depthCache;
   }
 
 
-  /**
-   * @return a klines/candlestick cache, containing the open/start time of the candlestick as the
-   *         key, and the candlestick data as the value.
-   * @throws TradingApiException
-   */
   @Override
   public Map<Long, Candlestick> getCandlesticksCache() {
     return candlesticksCache;

@@ -1,4 +1,4 @@
-package com.sidrhelli.binancebot.strategies.api;
+package com.sidrhelli.binancebot.strategies.api.impl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -45,37 +45,35 @@ import com.binance.api.client.domain.market.Candlestick;
 import com.sidrhelli.binancebot.apiservice.ApiService;
 import com.sidrhelli.binancebot.config.service.ConfigService;
 import com.sidrhelli.binancebot.config.service.domain.objects.MarketConfig;
+import com.sidrhelli.binancebot.dao.entitities.NewBinanceOrder;
+import com.sidrhelli.binancebot.dao.service.BinanceDaoService;
 import com.sidrhelli.binancebot.exceptions.StrategyException;
 import com.sidrhelli.binancebot.exceptions.TradingApiException;
-
+import com.sidrhelli.binancebot.strategies.api.TradingStrategy;
 
 @Component
 public class CryptoMomentumStrategyImpl implements TradingStrategy {
 
   private static final Logger LOG = LoggerFactory.getLogger(CryptoMomentumStrategyImpl.class);
-  // TODO: put buy amount in configuration file
   private static final String AMOUNT_OF_OUNTER_CURRENCY_TO_BUY = "0.00015303";
-  /** The decimal format for the logs. */
   private static final String DECIMAL_FORMAT = "#.########";
-  private static final Num ZERO_DOT_ZERO_FIVE = PrecisionNum.valueOf(0.05);
-  // TODO: add interval to configuration file
+  private static final Num ZERO_DOT_ZERO_THREE = PrecisionNum.valueOf(0.03);
   private static final long DURATION_OF_BAR = 1L;
   private ApiService apiService;
   @Autowired
   private ConfigService configService;
-  private MarketConfig marketConfig;
-  private BigDecimal counterCurrencyBuyOrderAmount;
+  @Autowired
+  private BinanceDaoService binanceDaoService;
   private BarSeries series;
-  private Order lastOrder;
-  /* e.g. BNB/BTC. This is used to print out to the log file and the console */
-  private String marketName;
-  private String marketSymbol;
   private Strategy strategy;
   private TradingRecord tradingRecord;
-  private int endIndex;
+  private MarketConfig marketConfig;
+  private BigDecimal counterCurrencyBuyOrderAmount;
   private BigDecimal amountOfBaseCurrencyToBuy;
-
-
+  private Order lastOrder;
+  private String fullMarketName;
+  private String marketSymbol;
+  private int endIndex;
 
   public String getStrategyName() {
     return "Crypto momentum strategy";
@@ -84,12 +82,10 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
   @Override
   public void execute() throws StrategyException {
 
-    LOG.info(marketName + " Checking order status..");
+    LOG.info(fullMarketName + " Checking order status..");
 
     final BigDecimal bestBidPrice = apiService.getBestBid().getKey();
     final BigDecimal bestAskPrice = apiService.getBestAsk().getKey();
-
-
 
     Map<Long, Candlestick> candleSticks = apiService.getCandlesticksCache();
     Long newestCandleStickKey = Collections.max(candleSticks.keySet());
@@ -97,20 +93,20 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
 
     /*
      * Is this the first time the Strategy has been called? If yes, we initialise the OrderState so
-     * we can keep track of orders during later trace cycles.
+     * we can keep track of orders during later cycles.
      */
     if (lastOrder == null) {
-      LOG.debug(
-          marketName + " First time Strategy has been called - creating new empty Order object.");
+      LOG.debug(fullMarketName
+          + " First time Strategy has been called - creating new empty Order object.");
       lastOrder = new Order();
     }
 
     series.addBar(convertCandleStickToBaseBar(newestCandleStick));
     endIndex = series.getEndIndex();
 
-    LOG.info("<<< Adding new bar" + newestCandleStick.getOpen() + " - "
+    LOG.info("<<< Adding new bar [" + newestCandleStick.getOpen() + " - "
         + newestCandleStick.getHigh() + " - " + newestCandleStick.getLow() + " - "
-        + newestCandleStick.getClose() + " to series>>>");
+        + newestCandleStick.getClose() + " to series] >>>");
 
     LOG.info("AccountDetails: <<< Free amount of BTC on account to trade with: "
         + apiService.getAccountBalanceCache().get("BTC").getFree() + " >>>");
@@ -118,7 +114,6 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
     LOG.info("Best BID price=" + new DecimalFormat(DECIMAL_FORMAT).format(bestBidPrice));
 
     LOG.info("Best ASK price=" + new DecimalFormat(DECIMAL_FORMAT).format(bestAskPrice));
-
 
     // Execute the appropriate algorithm based on the last order type.
     if (lastOrder.getSide() == OrderSide.BUY) {
@@ -138,7 +133,7 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
     System.out.println("Initialising Strategy..");
     this.apiService = apiService;
     this.marketConfig = marketConfig;
-    this.marketName = configService.getMarketConfig().getName();
+    this.fullMarketName = configService.getMarketConfig().getName();
     this.counterCurrencyBuyOrderAmount = new BigDecimal(AMOUNT_OF_OUNTER_CURRENCY_TO_BUY);
     this.marketSymbol = configService.getMarketConfig().getId();
     apiService.initializeCandlestickCache(marketSymbol);
@@ -184,19 +179,16 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
         .and(new CrossedDownIndicatorRule(cmo, PrecisionNum.valueOf(0)))
         .and(new OverIndicatorRule(shortEma, closePrice));
 
-
     Rule buy =
         new CrossedUpIndicatorRule(shortSma, longSma).or(new CrossedDownIndicatorRule(closePrice,
-            getClosePriceMinPercentage(closePrice, series, ZERO_DOT_ZERO_FIVE))
+            getClosePriceMinPercentage(closePrice, series, ZERO_DOT_ZERO_THREE))
                 .and(new OverIndicatorRule(macd, emaMacd))
                 .and(new CrossedDownIndicatorRule(stochasticOscillK, PrecisionNum.valueOf(20)))
                 .and(new OverIndicatorRule(shortEma, longEma)).and(momentumEntry));
 
-
     Rule momentumExit = new UnderIndicatorRule(shortSma, longSma)
         .and(new CrossedUpIndicatorRule(cmo, PrecisionNum.valueOf(0)))
         .and(new UnderIndicatorRule(shortSma, closePrice));
-
 
     Rule sell = new UnderIndicatorRule(shortEma, longEma)
         .and(new CrossedUpIndicatorRule(stochasticOscillK, PrecisionNum.valueOf(80)))
@@ -209,21 +201,15 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
     return new BaseStrategy("Crypto Momentum Strategy ", buy, sell);
   }
 
-
   /**
    * Algo for executing when the Trading Strategy is invoked for the first time. We start off with a
    * buy order at current BID price.
-   *
-   * @param currentBidPrice the current market BID price.
-   * @throws StrategyException if an unexpected exception is received from the Exchange Adapter.
-   *         Throwing this exception indicates we want the Trading Engine to shutdown the bot.
    */
   private void executeAlgoForWhenLastOrderWasNone(BigDecimal currentBidPrice)
       throws StrategyException {
-    LOG.info(marketName + " OrderType is NONE - looking for new BUY order at ["
+    LOG.info(fullMarketName + " OrderType is NONE - looking for new BUY order at ["
         + new DecimalFormat(DECIMAL_FORMAT).format(currentBidPrice) + "]");
     try {
-
 
       if (strategy.shouldEnter(endIndex)) {
         LOG.info(getStrategyName() + " Sending initial BUY order to exchange --->");
@@ -231,7 +217,6 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
         amountOfBaseCurrencyToBuy = getAmountOfBaseCurrencyToBuyForGivenCounterCurrencyAmount(
             counterCurrencyBuyOrderAmount);
 
-        // TODO: persist
         boolean entered = tradingRecord.enter(endIndex, PrecisionNum.valueOf(currentBidPrice),
             PrecisionNum.valueOf(amountOfBaseCurrencyToBuy));
         if (entered) {
@@ -240,45 +225,33 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
           final NewOrderResponse newOrder = apiService.createRealMarketBuyOrder(marketSymbol,
               amountOfBaseCurrencyToBuy.toPlainString());
 
+          final NewBinanceOrder binanceBuyOrder = new NewBinanceOrder(newOrder.getClientOrderId(),
+              newOrder.getSymbol(), newOrder.getOrderId(), newOrder.getTransactTime(),
+              newOrder.getPrice(), newOrder.getOrigQty(), newOrder.getExecutedQty(),
+              newOrder.getCummulativeQuoteQty(), newOrder.getStatus(), newOrder.getTimeInForce(),
+              newOrder.getType(), newOrder.getSide());
+
           // Update last order details
           lastOrder.setOrderId(newOrder.getOrderId());
+          lastOrder.setPrice(newOrder.getPrice());
+          lastOrder.setSide(newOrder.getSide());
+          lastOrder.setOrigQty(newOrder.getExecutedQty());
 
           LOG.info(getStrategyName()
               + " <<<<< ***** Yes, we've made a trade! Lets wait and see.. ****** \n Initial BUY Order sent successfully. ID: "
               + lastOrder.getOrderId() + "********>>>>>");
-          lastOrder.setPrice(newOrder.getPrice());
-          lastOrder.setSide(newOrder.getSide());
-          lastOrder.setOrigQty(newOrder.getExecutedQty());
+
+          binanceDaoService.save(binanceBuyOrder);
         }
-
-
       }
 
-
     } catch (Exception e) {
-      // Your error handling code could go here...
-      // We are just going to re-throw as StrategyException for engine to deal with - it will
-      // shutdown the bot.
-      LOG.error(
-
-          marketName
-              + " Initial order to BUY base currency failed because Exchange threw TradingApi "
-              + "exception. Telling Trading Engine to shutdown bot!",
-          e);
+      LOG.error(fullMarketName, e);
       throw new StrategyException(e);
     }
 
   }
 
-  /**
-   * Algo for executing when last order we placed on the exchanges was a BUY.
-   *
-   * <p>
-   * If last buy order filled, we try and sell at a profit.
-   *
-   * @throws StrategyException if an unexpected exception is received from the Exchange Adapter.
-   *         Throwing this exception indicates we want the Trading Engine to shutdown the bot.
-   */
   private void executeAlgoForWhenLastOrderWasBuy(BigDecimal currentAskPrice)
       throws StrategyException {
     try {
@@ -298,7 +271,7 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
 
         LOG.info(
 
-            marketName + " ^^^ Yay!!! Last BUY Order Id [" + lastOrder.getOrderId()
+            fullMarketName + " ^^^ Yay!!! Last BUY Order Id [" + lastOrder.getOrderId()
                 + "] filled at [" + lastOrder.getPrice() + "] " + "amount :[ "
                 + lastOrder.getOrigQty() + " ]");
 
@@ -307,56 +280,50 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
          */
         if (strategy.shouldExit(endIndex)) {
 
-          // Most exchanges (if not all) use 8 decimal places.
-          // It's usually best to round up the ASK price in your calculations to maximise gains.
           final BigDecimal newAskPrice =
               apiService.getBestAsk().getValue().setScale(8, RoundingMode.HALF_UP);
 
           boolean exited = tradingRecord.exit(endIndex, PrecisionNum.valueOf(newAskPrice),
               PrecisionNum.valueOf(lastOrder.getOrigQty()));
-          if (exited) {
 
-            LOG.info(marketName + " Placing new SELL order at ask price ["
+          if (exited) {
+            LOG.info(fullMarketName + " Placing new SELL order at ask price ["
                 + new DecimalFormat(DECIMAL_FORMAT).format(newAskPrice) + "]");
-            LOG.info(marketName + " Sending new SELL order to exchange --->");
+            LOG.info(fullMarketName + " Sending new SELL order to exchange --->");
 
             // Sending the sell order to the exchange
-            final NewOrderResponse newOrder =
+            final NewOrderResponse newSellOrder =
                 apiService.createRealMarketSellOrder(marketSymbol, lastOrder.getOrigQty());
 
-            // Update last order details
-            lastOrder.setOrderId(newOrder.getOrderId());
-            LOG.info(
-                marketName + " New SELL Order sent successfully. ID: " + lastOrder.getOrderId());
+            NewBinanceOrder binanceSellOrder = new NewBinanceOrder(newSellOrder.getClientOrderId(),
+                newSellOrder.getSymbol(), newSellOrder.getOrderId(), newSellOrder.getTransactTime(),
+                newSellOrder.getPrice(), newSellOrder.getOrigQty(), newSellOrder.getExecutedQty(),
+                newSellOrder.getCummulativeQuoteQty(), newSellOrder.getStatus(),
+                newSellOrder.getTimeInForce(), newSellOrder.getType(), newSellOrder.getSide());
+
+            lastOrder.setOrderId(newSellOrder.getOrderId());
             lastOrder.setPrice(newAskPrice.toPlainString());
             lastOrder.setSide(OrderSide.SELL);
+
+            LOG.info(fullMarketName + " New SELL Order sent successfully. ID: "
+                + lastOrder.getOrderId());
+
+            binanceDaoService.save(binanceSellOrder);
           }
         }
       } else {
-        /*
-         * BUY order has not filled yet.
-         */
-        LOG.info(marketName + " !!! Still have BUY Order " + lastOrder.getOrderId()
+        LOG.info(fullMarketName + " !!! Still have BUY Order " + lastOrder.getOrderId()
             + " waiting to fill at [" + lastOrder.getPrice() + "] - holding last BUY order...");
       }
     } catch (Exception e) {
-      LOG.error(marketName + " New order to SELL base currency failed because Exchange threw an "
-          + "exception. Telling Trading Engine to shutdown bot! Last Order: " + lastOrder, e);
+      LOG.error(
+          fullMarketName + " New order to SELL base currency failed because Exchange threw an "
+              + "exception. Telling Trading Engine to shutdown bot! Last Order: " + lastOrder,
+          e);
       throw new StrategyException(e);
     }
   }
 
-  /**
-   * Algo for executing when last order we placed on the exchange was a SELL.
-   *
-   * <p>
-   * If last sell order filled, we send a new buy order to the exchange.
-   *
-   * @param currentBidPrice the current market BID price.
-   * @param currentAskPrice the current market ASK price.
-   * @throws StrategyException if an unexpected exception is received from the Exchange Adapter.
-   *         Throwing this exception indicates we want the Trading Engine to shutdown the bot.
-   */
   private void executeAlgoForWhenLastOrderWasSell(BigDecimal currentBidPrice,
       BigDecimal currentAskPrice) throws StrategyException {
     try {
@@ -373,9 +340,9 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
       }
 
       if (!lastOrderFound) {
-        LOG.info(
-            marketName + " Yes!!! Last SELL Order Id [" + lastOrder.getOrderId() + "] filled at ["
-                + lastOrder.getPrice() + "]" + "amount :[ " + lastOrder.getOrigQty() + " ]");
+        LOG.info(fullMarketName + " Yes!!! Last SELL Order Id [" + lastOrder.getOrderId()
+            + "] filled at [" + lastOrder.getPrice() + "]" + "amount :[ " + lastOrder.getOrigQty()
+            + " ]");
 
         if (strategy.shouldEnter(endIndex)) {
 
@@ -388,61 +355,69 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
                 getAmountOfBaseCurrencyToBuyForGivenCounterCurrencyAmount(
                     counterCurrencyBuyOrderAmount);
 
-            LOG.info(marketName + " Placing new BUY order at bid price ["
+            LOG.info(fullMarketName + " Placing new BUY order at bid price ["
                 + new DecimalFormat(DECIMAL_FORMAT).format(currentBidPrice) + "]");
 
-            LOG.info(marketName + " Sending new BUY order to exchange --->");
+            LOG.info(fullMarketName + " Sending new BUY order to exchange --->");
 
             final NewOrderResponse newOrder = apiService.createRealMarketBuyOrder(marketSymbol,
                 amountOfBaseCurrencyToBuy.toPlainString());
 
-            // Update last order details
+            NewBinanceOrder binanceBuyOrder = new NewBinanceOrder(newOrder.getClientOrderId(),
+                newOrder.getSymbol(), newOrder.getOrderId(), newOrder.getTransactTime(),
+                newOrder.getPrice(), newOrder.getOrigQty(), newOrder.getExecutedQty(),
+                newOrder.getCummulativeQuoteQty(), newOrder.getStatus(), newOrder.getTimeInForce(),
+                newOrder.getType(), newOrder.getSide());
+
+
             lastOrder.setOrderId(newOrder.getOrderId());
-            LOG.info(marketName + " New BUY Order sent successfully. With ID: "
-                + lastOrder.getOrderId());
             lastOrder.setPrice(newOrder.getPrice());
             lastOrder.setSide(newOrder.getSide());
             lastOrder.setOrigQty(newOrder.getExecutedQty());
+
+            LOG.info(fullMarketName + " New BUY Order sent successfully. With ID: "
+                + lastOrder.getOrderId());
+
+            binanceDaoService.save(binanceBuyOrder);
           }
         }
       }
     } catch (Exception e) {
-      LOG.error(marketName + " New order to BUY base currency failed because Exchange threw "
+      LOG.error(fullMarketName + " New order to BUY base currency failed because Exchange threw "
           + "exception. Telling Trading Engine to shutdown bot! Last Order: " + lastOrder, e);
       throw new StrategyException(e);
     }
   }
 
-
-
   private BigDecimal getAmountOfBaseCurrencyToBuyForGivenCounterCurrencyAmount(
       BigDecimal amountOfCounterCurrencyToTrade) throws TradingApiException {
 
     LOG.info(
-
-        marketName + " Calculating amount of base currency (BTC) to buy for amount of counter "
+        fullMarketName + " Calculating amount of base currency (BTC) to buy for amount of counter "
             + "currency " + new DecimalFormat(DECIMAL_FORMAT).format(amountOfCounterCurrencyToTrade)
             + " " + marketConfig.getCounterCurrency());
 
     // Fetch the last trade price
     final BigDecimal lastTradePriceForOneBtc =
         new BigDecimal(apiService.getTickerFromRestClient(marketSymbol).getPrice());
-    LOG.info(marketName + " Last trade price for 1 " + marketConfig.getBaseCurrency() + " was: "
+
+
+    LOG.info(fullMarketName + " Last trade price for 1 " + marketConfig.getBaseCurrency() + " was: "
         + new DecimalFormat(DECIMAL_FORMAT).format(lastTradePriceForOneBtc) + " "
         + marketConfig.getCounterCurrency());
 
     final BigDecimal amountOfBaseCurrencyToBuy =
         amountOfCounterCurrencyToTrade.divide(lastTradePriceForOneBtc, 8, RoundingMode.HALF_DOWN);
     /**
-     * Some pairs have a minimum trade size. We have to round the base currency to buy to the minum
-     * trade size if the base currency size is smaller then the minimum trade size.
+     * Some pairs have a minimum trade size. We have to round the base currency to buy to the
+     * minimum trade size if the base currency size is smaller then the minimum trade size.
      */
     // TODO: fix ^
     if (marketSymbol.equals("bnbbtc")) {
       BigDecimal newAmountOfBaseCurrencyToBuy =
           amountOfBaseCurrencyToBuy.setScale(0, RoundingMode.UP);
 
-      LOG.info(marketName + " Amount of base currency (" + marketConfig.getBaseCurrency()
+      LOG.info(fullMarketName + " Amount of base currency (" + marketConfig.getBaseCurrency()
           + ") to BUY for " + new DecimalFormat(DECIMAL_FORMAT).format(newAmountOfBaseCurrencyToBuy)
           + " " + marketConfig.getCounterCurrency() + " based on last market trade price: "
           + newAmountOfBaseCurrencyToBuy);
@@ -450,7 +425,7 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
 
     }
 
-    LOG.info(marketName + " Amount of base currency (" + marketConfig.getBaseCurrency()
+    LOG.info(fullMarketName + " Amount of base currency (" + marketConfig.getBaseCurrency()
         + ") to BUY for " + new DecimalFormat(DECIMAL_FORMAT).format(amountOfCounterCurrencyToTrade)
         + " " + marketConfig.getCounterCurrency() + " based on last market trade price: "
         + amountOfBaseCurrencyToBuy);
@@ -458,29 +433,25 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
     return amountOfBaseCurrencyToBuy;
   }
 
-
   private static Num getClosePriceMinPercentage(ClosePriceIndicator aClosepriceIndicator,
       BarSeries aBarseries, Num multiplier) {
+
     Num closePrice = aBarseries.getLastBar().getClosePrice();
     Num percentage = closePrice.multipliedBy(multiplier);
-
     return closePrice.minus(percentage);
   }
-
 
   private BarSeries setupBarsSeries() {
     final int maxBarCount = 50;
 
-    series =
-        new BaseBarSeriesBuilder().withName(marketName).withNumTypeOf(PrecisionNum.class).build();
+    series = new BaseBarSeriesBuilder().withName(fullMarketName).withNumTypeOf(PrecisionNum.class)
+        .build();
     series.setMaximumBarCount(maxBarCount);
 
     List<Candlestick> candlesticks = apiService.getCandleStickListFromRestClient(maxBarCount);
 
     for (Candlestick candleStick : candlesticks) {
-
       Instant instant = Instant.ofEpochMilli(candleStick.getCloseTime());
-
       ZonedDateTime closeTime = ZonedDateTime.ofInstant(instant, ZoneId.of("UTC"));
       BigDecimal open = new BigDecimal(candleStick.getOpen());
       BigDecimal close = new BigDecimal(candleStick.getClose());
@@ -489,7 +460,6 @@ public class CryptoMomentumStrategyImpl implements TradingStrategy {
       BigDecimal volume = new BigDecimal(candleStick.getVolume());
 
       series.addBar(Duration.ofMinutes(DURATION_OF_BAR), closeTime, open, high, low, close, volume);
-
     }
     return series;
   }

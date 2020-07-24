@@ -12,15 +12,15 @@ import com.sidrhelli.binancebot.strategies.api.TradingStrategy;
 @Component
 public class TradingEngine {
   private static final Logger LOG = LogManager.getLogger(TradingEngine.class);
-  private final ConfigService configService;
 
-  // TODO: create configuration item for trade cycle interval
   private static final int TRADE_CYCLE_INTERVAL = 20;
   private static final Object IS_RUNNING_MONITOR = new Object();
   @SuppressWarnings("unused")
   private Thread engineThread;
   private volatile boolean keepAlive = true;
   private boolean isRunning = false;
+
+  private final ConfigService configService;
   private TradingStrategy cryptoMomentumStrategy;
   private ApiService apiService;
 
@@ -37,18 +37,15 @@ public class TradingEngine {
     synchronized (IS_RUNNING_MONITOR) {
       if (isRunning) {
         final String errorMsg = "Cannot start Trading Engine because it is already running!";
-        // LOG.error(() -> errorMsg);
         throw new IllegalStateException(errorMsg);
       }
       isRunning = true;
     }
 
-    // store this so we can shutdown the engine later
     engineThread = Thread.currentThread();
     System.out.println("Bot has started...");
     initEngine();
     runMainControlLoop();
-
   }
 
 
@@ -64,13 +61,9 @@ public class TradingEngine {
 
         cryptoMomentumStrategy.execute();
 
-
         sleepUntilNextTradingCycle();
-
       } catch (StrategyException e) {
         handleStrategyException(e);
-
-
       } catch (Exception e) {
         handleUnexpectedException(e);
       }

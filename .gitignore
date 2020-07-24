@@ -31,8 +31,11 @@ build/
 .vscode/
 
 ### logs ###
-*.logs
-/bin/
+/logs
+
 
 ###
 exchange.yaml
+application.properties
+data.sql
+logback-spring.xml
