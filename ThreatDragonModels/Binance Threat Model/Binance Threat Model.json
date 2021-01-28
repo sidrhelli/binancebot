@@ -1,0 +1,16 @@
+{
+  "summary": {
+    "title": "Binance Threat Model",
+    "owner": "Sergio"
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [
+      {
+        "title": "bxbot",
+        "thumbnail": "./public/content/images/thumbnail.jpg",
+        "id": 0
+      }
+    ]
+  }
+}
