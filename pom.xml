@@ -7,7 +7,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.3.1.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.sidrhelli</groupId>
 	<artifactId>binancebot</artifactId>
@@ -61,7 +61,7 @@
 		<dependency>
 			<groupId>org.ta4j</groupId>
 			<artifactId>ta4j-core</artifactId>
-			<version>0.13</version>
+			<version>0.14</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
